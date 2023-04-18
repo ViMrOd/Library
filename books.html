@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-  <link rel="stylesheet" href="home.css">
+  <link rel="stylesheet" href="styles/global.css">
+  <link rel="stylesheet" href="styles/books.css">
     <meta charset="UTF-8">
     <title>Library Website</title>
   </head>
@@ -21,14 +22,52 @@
         </ul>
       </nav>
     </header>
-    <section>
-        <h1>Books</h3>
-        <ul>
-          <li><a href="#">Book Title 1</a></li>
-          <li><a href="#">Book Title 2</a></li>
-          <li><a href="#">Book Title 3</a></li>
-          <li><a href="#">Book Title 4</a></li>
-        </ul>
-      </section>
+    <main>
+        <section>
+            <h1>Books</h1>
+            <ul class="book-grid">
+                <li class="book-grid-item">
+                    <div class="book-content">
+                        <img src="images/book1.png" alt="">
+                        <a href="#">Works On My Machine</a>
+                        <div>
+                            <button type="">Checkout</button>
+                            <button type="">More Info</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="book-grid-item">
+                    <div class="book-content">
+                        <img src="images/book2.png" alt="">
+                        <a href="#">Web Development With Assembly</a>
+                        <div>
+                            <button type="">Checkout</button>
+                            <button type="">More Info</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="book-grid-item">
+                    <div class="book-content">
+                        <img src="images/book3.jpg" alt="">
+                        <a href="#">Blaming the User</a>
+                        <div>
+                            <button type="">Checkout</button>
+                            <button type="">More Info</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="book-grid-item">
+                    <div class="book-content">
+                        <img src="images/book4.jpg" alt="">
+                        <a href="#">Writing Code that Nobody Else Can Read</a>
+                        <div>
+                            <button type="">Checkout</button>
+                            <button type="">More Info</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
   </body>
 </html>

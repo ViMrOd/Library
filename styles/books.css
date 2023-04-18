@@ -1,0 +1,32 @@
+.book-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 5rem;
+}
+
+.book-grid-item {
+    width: 100%;
+}
+
+.book-content {
+    width: min-content;
+    margin: auto;
+}
+
+img {
+    display: block;
+    width: 12rem;
+    height: auto;
+}
+
+.book-content > a {
+    text-align: center;
+    margin: 3%;
+    font-weight:bold;
+    display: block;
+}
+
+.book-content > div {
+    width: max-content;
+    margin: auto;
+}
