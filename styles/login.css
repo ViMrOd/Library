@@ -13,6 +13,12 @@ body {
     font-family: sans-serif;
 }
 
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+
 form,
 
 .message {
@@ -21,7 +27,7 @@ form,
     background: #fff;
 }
 
-h2, h4 {
+h2, h4, h6 {
     margin: 5px 0;
     color: #1F1A19;
     text-align: center;
