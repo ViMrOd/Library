@@ -30,3 +30,7 @@ img {
     width: max-content;
     margin: auto;
 }
+
+.filter-container {
+    margin-bottom: 2rem;
+}
