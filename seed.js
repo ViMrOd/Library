@@ -1,13 +1,12 @@
-import Database from 'better-sqlite3';
-const db = new Database('library.db');
+import { database } from "./globals.js"
 
-db.prepare('drop table if exists test').run();
-db.prepare('create table test (message varchar(20), numb int)').run();
+database.prepare('drop table if exists test').run();
+database.prepare('create table test (message varchar(20), numb int)').run();
 const testString = "Hello world";
 const testNum = 5;
-db.prepare('insert into test values(?, ?)').run(testString, testNum);
-db.prepare('insert into test values(?, 5)').run("Goodbye world");
+database.prepare('insert into test values(?, ?)').run(testString, testNum);
+database.prepare('insert into test values(?, 5)').run("Goodbye world");
 
-const row = db.prepare('select * from test').get();
+const row = database.prepare('select * from test').get();
 console.log(row);
 

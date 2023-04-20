@@ -1,8 +1,9 @@
-const globalData = {
-    loggedInUser:  {
-        username: "",
-        isAdmin: false
-    }
-}
+import Database from 'better-sqlite3';
 
-export default globalData
+const loggedInUser = {
+    username: "",
+    isAdmin: false
+}
+const database = new Database('library.db')
+
+export { loggedInUser, database }

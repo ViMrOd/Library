@@ -1,4 +1,4 @@
-import loggedInUser from "./globals.js"
+import { loggedInUser } from "./globals.js"
 
 // Can use it now
 
