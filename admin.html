@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Library Admin Portal</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+	<h1>Library Admin Portal</h1>
+
+	<label for="searchInput">Search customer:</label>
+	<input type="text" id="searchInput" name="searchInput">
+	<button id="searchButton">Search</button>
+
+	<div id="customerInfo">
+	</div>
+
+	<script>
+	$(document).ready(function() {
+		$('#searchButton').on('click', function() {
+			var searchInput = $('#searchInput').val();
+
+			$.ajax({
+				url: '/customer/' + searchInput,
+				type: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					var customerInfoHtml = '';
+
+					if (data && data.length > 0) {
+						var customer = data[0];
+						customerInfoHtml += '<h2>Customer Info</h2>';
+						customerInfoHtml += '<p>Name: ' + customer.name + '</p>';
+						customerInfoHtml += '<p>Email: ' + customer.email + '</p>';
+						customerInfoHtml += '<p>Phone: ' + customer.phone + '</p>';
+					} else {
+						customerInfoHtml += '<p>No customer found with that ID.</p>';
+					}
+
+					$('#customerInfo').html(customerInfoHtml);
+				},
+				error: function() {
+					$('#customerInfo').html('<p>Error searching for customer.</p>');
+				}
+			});
+		});
+	});
+	</script>
+</body>
+</html>
+
