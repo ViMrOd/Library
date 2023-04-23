@@ -1,14 +1,65 @@
-import loggedInUser from "./globals.js"
+import { loggedInUser } from "./globals";
+
+let inputUsername;
+let inputPassname;
 
 document.querySelector('form').onsubmit = (e) => {
-        e.preventDefault();
+    e.preventDefault();
+    inputUsername = document.querySelector('#inputUsername').value;
+    inputPassname = document.querySelector('#inputPassword').value;
 
-        let username = "admin";    // Need to use database to input these values
-        let password = "admin";    // Need to use database to input these values
+    loggedInUser.username = inputUsername;
+
+
+    console.log('username: ' + loggedInUser.username);
+
+    var searchInput = inputUsername;
+
+
+            $.ajax({
+                url: 'http://localhost:3000/customer/' + inputUsername,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+
+                    var password = '';
+                    console.log(data);
+
+                    if (data && data.length > 0) {
+                        var customer = data[0];
+                        username += customer.customer_id;
+                        password += customer.password;
+
+                    } else {
+
+
+
+                    }
+
+                },
+                error: function() {
+                    alert("Sorry, we ran into an error.\n\nPlease double-check your login info.")
+                }
+            });
+
+}
+
+
+
+
+/*
+document.querySelector('form').onsubmit = (e) => {
+        e.preventDefault();
 
 
         let inputUser = document.querySelector('#txtUsername').value;
         let inputPass = document.querySelector('#txtPassword').value;
+
+
+        
+        let username = "admin";    // Need to use database to input these values
+        let password = "admin";    // Need to use database to input these values
+
 
         if (inputUser != username || inputPass != password) {
             //document.querySelector('#messageFail').innerHTML = "Username and Password do not match.<br>Please try again.";
@@ -27,5 +78,4 @@ document.querySelector('form').onsubmit = (e) => {
         }
 
     }
-
-
+*/
