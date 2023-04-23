@@ -26,10 +26,11 @@ app.listen(port, () => {
 app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
     const inputUsername = req.params.inputUsername;
     const inputPassword = req.params.inputPassword;
-
     try {
         const user = db.prepare('SELECT * FROM customers WHERE username = ?').get(inputUsername);
+        // user = user object from query
 
+        console.log(user.password);
 
 
     } catch (error) {
