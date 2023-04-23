@@ -1,4 +1,4 @@
-import { loggedInUser } from "./globals.js"
+const db = require('better-sqlite3')('library.db');
 
 // Can use it now
 
@@ -22,6 +22,7 @@ function addBook(title, src) {
     bookItem.classList.add("book-grid-item");
 
     const bookContent = document.createElement("div");
+const { logginedInUser } = require("./globals.js");
     bookContent.classList.add("book-content");
 
     const bookImage = document.createElement("img");
@@ -47,6 +48,7 @@ function addBook(title, src) {
     bookGrid.appendChild(bookItem);
 }
 
+const books = db.all("select ");
 
 addBook("Works on My Machine", "book1");
 addBook("Works on My Machine", "book2");

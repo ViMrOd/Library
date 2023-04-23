@@ -3,4 +3,4 @@ const loggedInUser = {
     isAdmin: false
 }
 
-export { loggedInUser };
+module.exports = { loggedInUser };
