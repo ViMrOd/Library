@@ -10,4 +10,7 @@ db.exec(`
         (customer_name, fine)
         values ('bob', 20);
 
+    insert or replace into customers
+        (customer_name, fine)
+        values ('shelly', 10);
 `);

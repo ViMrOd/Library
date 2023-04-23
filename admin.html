@@ -20,17 +20,17 @@
 			var searchInput = $('#searchInput').val();
 
 			$.ajax({
-				url: '/admin/' + searchInput,
+				url: 'http://localhost:3000/customer/' + searchInput,
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
 					var customerInfoHtml = '';
-
+                    console.log(data);
 					if (data && data.length > 0) {
 						var customer = data[0];
 						customerInfoHtml += '<h2>Customer Info</h2>';
-						customerInfoHtml += '<p>Name: ' + customer.name + '</p>';
-						customerInfoHtml += '<p>Email: ' + customer.email + '</p>';
+						customerInfoHtml += '<p>Name: ' + customer.customer_name + '</p>';
+						customerInfoHtml += '<p>Email: ' + customer.fine + '</p>';
 						customerInfoHtml += '<p>Phone: ' + customer.phone + '</p>';
 					} else {
 						customerInfoHtml += '<p>No customer found with that ID.</p>';
