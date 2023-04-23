@@ -20,7 +20,7 @@
 			var searchInput = $('#searchInput').val();
 
 			$.ajax({
-				url: '/customer/' + searchInput,
+				url: '/admin/' + searchInput,
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
