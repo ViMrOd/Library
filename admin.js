@@ -1,14 +1,7 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
+const db = require('better-sqlite3')('library.db');
 const app = express();
 const port = 3000;
-
-const db = new sqlite3.Database('customers.db', (err) => {
-	if (err) {
-		console.error(err.message);
-	}
-	console.log('Connected to the library database.');
-});
 
 app.get('/customer/:id', (req, res) => {
 	const customerId = req.params.id;
