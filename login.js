@@ -1,46 +1,34 @@
-import { loggedInUser } from "./globals";
+const express = require('express');
 
-let inputUsername;
-let inputPassname;
+class User {
+    constructor() {
+        // Member Variables
+        this.username_;
+        this.password_;
+        this.admin_;
+    }
+
+    setUsername(newUsername) { this.username_ = newUsername; }
+    getUsername() { return this.username_; }
+}
+
+let user = new User();
+
+//localStorage.setItem('loggedInUser', JSON.stringify(user.getUsername()));
+
+
+
 
 document.querySelector('form').onsubmit = (e) => {
     e.preventDefault();
-    inputUsername = document.querySelector('#inputUsername').value;
-    inputPassname = document.querySelector('#inputPassword').value;
 
-    loggedInUser.username = inputUsername;
-
-
-    console.log('username: ' + loggedInUser.username);
-
-    var searchInput = inputUsername;
+    let inputUsername = document.querySelector('#inputUsername').value;
+    let inputPassname = document.querySelector('#inputPassword').value;
 
 
-            $.ajax({
-                url: 'http://localhost:3000/customer/' + inputUsername,
-                type: 'GET',
-                dataType: 'json',
-                success: function(data) {
-
-                    var password = '';
-                    console.log(data);
-
-                    if (data && data.length > 0) {
-                        var customer = data[0];
-                        username += customer.customer_id;
-                        password += customer.password;
-
-                    } else {
+    console.log(inputUsername);
 
 
-
-                    }
-
-                },
-                error: function() {
-                    alert("Sorry, we ran into an error.\n\nPlease double-check your login info.")
-                }
-            });
 
 }
 

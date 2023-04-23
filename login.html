@@ -32,7 +32,44 @@
     </form>
 
     <script src="login.js"></script>
+	<script>
+        $(document).ready(function() {
+            $('#submit').on('click', function() {
+                var inputUsername = $('#inputUsername').val();
+                var inputPassword = $('#inputPassword').val();
+    
+                $.ajax({
+                    url: 'http://localhost:3000/customer/' + inputUsername + '/' + inputPassword,
+                    type: 'GET',
+                    dataType: 'json',
+                    success:
 
+                    function(data) {
+                        var customerInfoHtml = '';
+                        console.log(data);
+                        if (data && data.length > 0) {
+                            var customer = data[0];
+                            customerInfoHtml += '<h2>Customer Info</h2>';
+                            customerInfoHtml += '<p>Name: ' + customer.customer_name + '</p>';
+                            customerInfoHtml += '<p>Email: ' + customer.fine + '</p>';
+                            customerInfoHtml += '<p>Phone: ' + customer.phone + '</p>';
+                        } else {
+                            customerInfoHtml += '<p>No customer found with that ID.</p>';
+                        }
+    
+                        $('#customerInfo').html(customerInfoHtml);
+                    },
+
+                    error: function() {
+
+                        $('#customerInfo').html('<p>Error searching for customer.</p>');
+                        
+                    }
+                });
+            });
+        });
+        </script>
+    
 
 
 
