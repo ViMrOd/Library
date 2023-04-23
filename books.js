@@ -22,7 +22,6 @@ function addBook(title, src) {
     bookItem.classList.add("book-grid-item");
 
     const bookContent = document.createElement("div");
-const { logginedInUser } = require("./globals.js");
     bookContent.classList.add("book-content");
 
     const bookImage = document.createElement("img");

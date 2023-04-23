@@ -5,7 +5,7 @@ db.exec(`
         user_id integer NOT NULL primary key autoincrement,
         username varchar(20) unique NOT NULL,
         password varchar(20) NOT NULL,
-        isAdmin bool default 0,
+        is_admin bool default 0,
         fine integer
     );
 

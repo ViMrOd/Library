@@ -6,12 +6,27 @@ const port = 3000;
 
 app.use(cors());
 
-app.get('/customer/:id', (req, res) => {
-	const customerId = req.params.id;
+app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
+    const inputUsername = req.params.inputUsername;
+    const inputPassword = req.params.inputPassword;
     try {
-        const customer = db.prepare('SELECT * FROM customers WHERE customer_id = ?').get(customerId);
+        // user = user object from query
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify([customer]));
+        res.send(JSON.stringify());
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for username.');
+    }
+
+});
+
+app.get('/customer/:id', (req, res) => {
+	const user = req.params.id;
+    try {
+        const user = db.prepare('SELECT * FROM users WHERE user_id = ?').get(userId);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify([user]));
     } catch (error) {
         console.error(error);
 		res.status(500).send('Error searching for customer.');
@@ -20,23 +35,4 @@ app.get('/customer/:id', (req, res) => {
 
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
-});
-
-
-app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
-    const inputUsername = req.params.inputUsername;
-    const inputPassword = req.params.inputPassword;
-    try {
-        const user = db.prepare('SELECT * FROM customers WHERE username = ?').get(inputUsername);
-        // user = user object from query
-
-        console.log(user.password);
-
-
-    } catch (error) {
-        console.error(error);
-		res.status(500).send('Error searching for username.');
-    }
-
-
 });
