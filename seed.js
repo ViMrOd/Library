@@ -11,10 +11,9 @@ db.exec(`
 
     insert or replace into users
         (username, password, isAdmin, fine)
-        values ('bob', 0, '1234', 50);
+        values ('bob', '1234', 0, 50);
 
     insert or replace into users
         (username, password, isAdmin, fine)
-        values ('shelly', 1,'43210000', 50);
-
+        values ('shelly', '43210000', 1, 50);
 `);
