@@ -21,3 +21,21 @@ app.get('/customer/:id', (req, res) => {
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
 });
+
+
+app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
+    const inputUsername = req.params.inputUsername;
+    const inputPassword = req.params.inputPassword;
+
+    try {
+        const user = db.prepare('SELECT * FROM customers WHERE username = ?').get(inputUsername);
+
+
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for username.');
+    }
+
+
+});

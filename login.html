@@ -20,8 +20,8 @@
         <h2>Login</h2>
         <hr>
 
-        <input type="text" name="txtUsername" id="txtUsername" placeholder="Enter your username" required>
-        <input type="password" name="txtPassword" id="txtPassword" placeholder="Enter your password" required>
+        <input type="text" name="inputUsername" id="inputUsername" placeholder="Enter your username" required>
+        <input type="password" name="inputPassword" id="inputPassword" placeholder="Enter your password" required>
         <button type="submit" class="btn">Login</button>
 
         <br>
@@ -31,19 +31,58 @@
         <hr>
     </form>
 
+    <script src="login.js"></script>
+	<script>
+        $(document).ready(function() {
+            $('#submit').on('click', function() {
+                var inputUsername = $('#inputUsername').val();
+                var inputPassword = $('#inputPassword').val();
+    
+                $.ajax({
+                    url: 'http://localhost:3000/customer/' + inputUsername + '/' + inputPassword,
+                    type: 'GET',
+                    dataType: 'json',
+                    success:
+
+                    function(data) {
+                        var customerInfoHtml = '';
+                        console.log(data);
+                        if (data && data.length > 0) {
+                            var customer = data[0];
+                            customerInfoHtml += '<h2>Customer Info</h2>';
+                            customerInfoHtml += '<p>Name: ' + customer.customer_name + '</p>';
+                            customerInfoHtml += '<p>Email: ' + customer.fine + '</p>';
+                            customerInfoHtml += '<p>Phone: ' + customer.phone + '</p>';
+                        } else {
+                            customerInfoHtml += '<p>No customer found with that ID.</p>';
+                        }
+    
+                        $('#customerInfo').html(customerInfoHtml);
+                    },
+
+                    error: function() {
+
+                        $('#customerInfo').html('<p>Error searching for customer.</p>');
+                        
+                    }
+                });
+            });
+        });
+        </script>
+    
 
 
 
     <div class="message success">
         <p id="messageSucc" style="text-align:center;"></p>
-        <a href="home.html" class="btn">Home</a> <!-- Where we connect user to pages with login priveleges-->
+        <a href="index.html" class="btn">Home</a> <!-- Where we connect user to pages with login priveleges-->
     </div>
 
 
 
-
+<!--
     <script src="login.js"></script>
-
+-->
 </body>
 
 </html>
