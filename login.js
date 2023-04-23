@@ -1,5 +1,3 @@
-const express = require('express');
-
 class User {
     constructor() {
         // Member Variables
@@ -19,18 +17,39 @@ let user = new User();
 
 
 
-document.querySelector('form').onsubmit = (e) => {
-    e.preventDefault();
+$(document).ready(function() {
+    $('#submit').on('click', function() {
+        var inputUsername = $('#inputUsername').val();
+        var inputPassword = $('#inputPassword').val();
 
-    let inputUsername = document.querySelector('#inputUsername').value;
-    let inputPassname = document.querySelector('#inputPassword').value;
+        $.ajax({
+            url: 'http://localhost:3000/customer/' + inputUsername + '/' + inputPassword,
+            type: 'GET',
+            dataType: 'json',
+            success:
 
+            function(data) {
+                var customerInfoHtml = '';
+                console.log(data);
+                if (data && data.length > 0) {
+                    var customer = data[0];
 
-    console.log(inputUsername);
+            
+s                        } else {
+                    customerInfoHtml += '<p>No customer found with that ID.</p>';
+                }
 
+                $('#customerInfo').html(customerInfoHtml);
+            },
 
+            error: function() {
 
-}
+                $('#customerInfo').html('<p>Error searching for customer.</p>');
+                
+            }
+        });
+    });
+});
 
 
 
