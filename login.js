@@ -20,11 +20,11 @@ $(document).ready(function() {
         var inputUsername = $('#inputUsername').val();
         var inputPassword = $('#inputPassword').val();
         $.ajax({
-            url: 'http://localhost:3000/customer/' + inputUsername + '/' + inputPassword,
+            url: 'http://localhost:3000/login/' + inputUsername + '/' + inputPassword,
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-
+                console.log("hello world");
             },
             error: function() {
                 $('#customerInfo').html('<p>Error searching for customer.</p>');

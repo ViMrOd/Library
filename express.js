@@ -6,21 +6,6 @@ const port = 3000;
 
 app.use(cors());
 
-app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
-    const inputUsername = req.params.inputUsername;
-    const inputPassword = req.params.inputPassword;
-    try {
-        // user = user object from query
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify());
-
-    } catch (error) {
-        console.error(error);
-		res.status(500).send('Error searching for username.');
-    }
-
-});
-
 app.get('/books', (req, res) => {
     try {
         // user = user object from query
@@ -35,28 +20,43 @@ app.get('/books', (req, res) => {
 
 });
 
-app.get('/customer/:id', (req, res) => {
-	const user = req.params.id;
+app.get('/user/:identifier', (req, res) => {
+	const identifier = req.params.identifier;
     try {
-        const user = db.prepare('SELECT * FROM users WHERE user_id = ? or username = ?').get(userId);
+        const user = db.prepare('SELECT * FROM users WHERE user_id = ? or username = ?').get(identifier, identifier);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify([user]));
     } catch (error) {
         console.error(error);
-		res.status(500).send('Error searching for customer.');
+		res.status(500).send('Error searching for user.');
     }
 });
 
-app.put('/customer/:id/:date', (req, res) => {
-    const { id, date } = req.params;
+app.put('/user/:identifier/:date', (req, res) => {
+    const { identifier, date } = req.params;
     try {
         const query = db.prepare('UPDATE users SET return_date = ? WHERE user_id = ? OR username = ?');
-        const result = query.run(date, id, id);
+        const result = query.run(date, identifier, identifier);
         res.status(200).send('Return date updated successfully.');
     } catch (error) {
         console.error(error);
         res.status(500).send('Error updating return date for customer.');
     }
+});
+
+app.get('/login/:inputUsername/:inputPassword', (req, res) => {
+    const inputUsername = req.params.inputUsername;
+    const inputPassword = req.params.inputPassword;
+    try {
+        // user = user object from query
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify());
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for username.');
+    }
+
 });
 
 app.listen(port, () => {

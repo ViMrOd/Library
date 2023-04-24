@@ -16,11 +16,12 @@
 
 	<script>
 	$(document).ready(function() {
-		$('#searchButton').on('click', function() {
+		$('#searchButton').on('click', function(e) {
+            e.preventDefault();
 			var searchInput = $('#searchInput').val();
 
 			$.ajax({
-				url: 'http://localhost:3000/customer/' + searchInput,
+				url: 'http://localhost:3000/user/' + searchInput,
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
