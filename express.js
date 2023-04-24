@@ -33,6 +33,18 @@ app.get('/customer/:id', (req, res) => {
     }
 });
 
+app.put('/customer/:id/:date', (req, res) => {
+    const { id, date } = req.params;
+    try {
+        const query = db.prepare('UPDATE users SET return_date = ? WHERE user_id = ? OR username = ?');
+        const result = query.run(date, id, id);
+        res.status(200).send('Return date updated successfully.');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating return date for customer.');
+    }
+});
+
 app.listen(port, () => {
 	console.log(`Server listening on port ${port}.`);
 });
