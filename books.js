@@ -1,7 +1,3 @@
-const db = require('better-sqlite3')('library.db');
-
-// Can use it now
-
 const bookGrid = document.querySelector(".book-grid");
 
 function updateAndDisplayInfoMenu(src, title, author, yearPublished, publisher, isbn) {
@@ -46,8 +42,6 @@ function addBook(title, src) {
     bookItem.appendChild(bookContent);
     bookGrid.appendChild(bookItem);
 }
-
-const books = db.all("select ");
 
 addBook("Works on My Machine", "book1");
 addBook("Works on My Machine", "book2");

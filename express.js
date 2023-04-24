@@ -21,6 +21,20 @@ app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
 
 });
 
+app.get('/books', (req, res) => {
+    try {
+        // user = user object from query
+        const books = db.prepare(`select * from books`).all();
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(books));
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for books.');
+    }
+
+});
+
 app.get('/customer/:id', (req, res) => {
 	const user = req.params.id;
     try {
