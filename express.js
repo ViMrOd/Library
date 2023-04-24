@@ -38,12 +38,24 @@ app.get('/books', (req, res) => {
 app.get('/customer/:id', (req, res) => {
 	const user = req.params.id;
     try {
-        const user = db.prepare('SELECT * FROM users WHERE user_id = ?').get(userId);
+        const user = db.prepare('SELECT * FROM users WHERE user_id = ? or username = ?').get(userId);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify([user]));
     } catch (error) {
         console.error(error);
 		res.status(500).send('Error searching for customer.');
+    }
+});
+
+app.put('/customer/:id/:date', (req, res) => {
+    const { id, date } = req.params;
+    try {
+        const query = db.prepare('UPDATE users SET return_date = ? WHERE user_id = ? OR username = ?');
+        const result = query.run(date, id, id);
+        res.status(200).send('Return date updated successfully.');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating return date for customer.');
     }
 });
 
