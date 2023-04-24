@@ -24,7 +24,7 @@ app.get('/customer/:inputUsername/:inputPassword', (req, res) => {
 app.get('/customer/:id', (req, res) => {
 	const user = req.params.id;
     try {
-        const user = db.prepare('SELECT * FROM users WHERE user_id = ?').get(userId);
+        const user = db.prepare('SELECT * FROM users WHERE user_id = ? or username = ?').get(userId);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify([user]));
     } catch (error) {
