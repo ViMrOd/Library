@@ -29,7 +29,7 @@ db.exec(`
     create table if not exists branches (
         branch_id integer NOT NULL primary key autoincrement,
         branch_name varchar(20) NOT NULL,
-        checkout_count integer default 0 check (checkout_count >= 0),
+        checkout_count integer default 0 check (checkout_count >= 0)
     );
 
     create table if not exists user_addresses (
@@ -44,8 +44,20 @@ db.exec(`
     begin
         update branches
         set checkout_count = checkout_count + 1
-        where branch_id = (select branch_id from books where book_id = new.book_id)
+        where branch_id = (select branch_id from books where book_id = new.book_id);
     end;
+
+    insert or replace into branches
+        (branch_name)
+        values('aurora');
+
+    insert or replace into branches
+        (branch_name)
+        values('streetsboro');
+
+    insert or replace into branches
+        (branch_name)
+        values('kent');
 
     insert or replace into users
         (username, password, is_admin)
@@ -56,12 +68,36 @@ db.exec(`
         values ('shelly', '4321', 1);
 
     insert or replace into books
-        (title, author, publisher)
-        values ('test1', 'test11', 'test111');
+        (title, branch_id, subtitle, author, publisher)
+        values ('Blaming the User', 1, 'You''re a 10x hacker and it must be someone else''s fault', 'The Practical Dev', 'ORLY');
 
     insert or replace into books
-        (title, author, publisher)
-        values ('test2', 'test22', 'test222');
+        (title, branch_id, subtitle, author, publisher)
+        values ('Buzzword First Design', 1, 'Fashion-forward development', 'The Practical Dev', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Coding Drunk', 1, 'Make Programming Fun Again', 'N.E. Briated', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Googling the Error Message', 2, 'The internet will make those bad words go away', 'The Practical Dev', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Memorizing Six Git Commands', 2, 'The popular approach to version control', 'The Practical Dev', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Web Development With Assembly', 2, 'You might as well just yourself right now', 'Bob Johnson (with his therapist)', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Works on My Machine', 3, 'How to convince your manager', 'R. William', 'ORLY');
+
+    insert or replace into books
+        (title, branch_id, subtitle, author, publisher)
+        values ('Writing Code That Nobody Else can Read', 3, 'Does it run? Just leave it alone.', 'The Practical Dev', 'ORLY');
 
     insert or replace into checkouts
         values (1, 2, DATE('2023-04-20'), DATE('2023-04-20'), 0);

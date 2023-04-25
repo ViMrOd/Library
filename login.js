@@ -24,9 +24,10 @@ $(document).ready(function() {
             type: 'GET',
             dataType: 'json',
             success: function(data) {
-                console.log("hello world");
+                console.log(data);
             },
-            error: function() {
+            error: function(textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
                 $('#customerInfo').html('<p>Error searching for customer.</p>');
             }
         });

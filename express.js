@@ -8,7 +8,6 @@ app.use(cors());
 
 app.get('/books', (req, res) => {
     try {
-        // user = user object from query
         const books = db.prepare(`select * from books`).all();
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(books));
@@ -18,6 +17,21 @@ app.get('/books', (req, res) => {
 		res.status(500).send('Error searching for books.');
     }
 
+});
+
+app.get('/books/:branchName', (req, res) => {
+    try {
+        const branchName = req.params.branchName;
+        const branch = db.prepare(`select branch_id from branches where branch_name = ?`).get(branchName);
+        console.log(branch);
+        const books = db.prepare(`select * from books where branch_id = ?`).all(branch.branch_id);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(books));
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for books with branch name.');
+    }
 });
 
 app.get('/user/:identifier', (req, res) => {
@@ -47,10 +61,11 @@ app.put('/user/:identifier/:date', (req, res) => {
 app.get('/login/:inputUsername/:inputPassword', (req, res) => {
     const inputUsername = req.params.inputUsername;
     const inputPassword = req.params.inputPassword;
+    console.log(inputUsername);
     try {
         // user = user object from query
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify());
+        res.send(JSON.stringify("hello world"));
 
     } catch (error) {
         console.error(error);

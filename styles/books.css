@@ -14,6 +14,7 @@
 }
 
 img {
+    outline: black solid 1px;
     display: block;
     width: 12rem;
     height: auto;
@@ -50,6 +51,10 @@ img {
     position: absolute;
 }
 
+.info > span {
+    font-weight: bold;
+}
+
 .info-image {
     display: block;
     height: auto;
@@ -67,6 +72,7 @@ img {
 }
 
 .info-container {
+    min-width: 175px;
     font-size: 1.2rem;
     padding: 16%;
 }
