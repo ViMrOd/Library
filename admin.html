@@ -2,9 +2,20 @@
 <html>
 <head>
 	<title>Library Admin Portal</title>
+    <link rel="stylesheet" href="styles/global.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
+    <header>
+      <h1>Library Name</h1>
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="books.html">Books</a></li>
+          <li><a href="login.html">Login</a></li>
+        </ul>
+      </nav>
+    </header>
 	<h1>Library Admin Portal</h1>
 
 	<label for="searchInput">Search customer:</label>
@@ -14,9 +25,9 @@
 	<div id="customerInfo">
 	</div>
 
-	<div id="returnDateForm" style="display: none;">
+	<div id="returnDateForm">
 		<label for="returnDateInput">Enter return date:</label>
-		<input type="text" id="returnDateInput" name="returnDateInput">
+		<input type="date" id="returnDateInput" name="returnDateInput">
 		<button id="updateReturnDateButton">Update Return Date</button>
 	</div>
 
@@ -32,13 +43,23 @@
 				dataType: 'json',
 				success: function(data) {
 					var customerInfoHtml = '';
-                    console.log(data);
-					if (data && data.length > 0) {
+					if (data) {
 						var customer = data[0];
 						customerInfoHtml += '<h2>Customer Info</h2>';
-						customerInfoHtml += '<p>Name: ' + customer.customer_name + '</p>';
-						customerInfoHtml += '<p>Email: ' + customer.fine + '</p>';
-						customerInfoHtml += '<p>Phone: ' + customer.phone + '</p>';
+						customerInfoHtml += '<p>Username: ' + customer.username + '</p>';
+						customerInfoHtml += '<p>Password: ' + customer.password + '</p>';
+						customerInfoHtml += '<p>Is admin?: ' + customer.is_admin + '</p>';
+                        customerInfoHtml += `<p>-------------------</p>`;
+						customerInfoHtml += '<p>Checked out books: </p>';
+                        customerInfoHtml += `<br>`;
+                        data.forEach(checkout => {
+                            customerInfoHtml += `<p>-------------------</p>`;
+                            customerInfoHtml += `<p>title: ${checkout.title}</p>`;
+                            customerInfoHtml += `<p>checkout date: ${checkout.checkout_date}</p>`;
+                            customerInfoHtml += `<p>return date: ${checkout.return_date}</p>`;
+                            customerInfoHtml += `<p>fine: ${checkout.fine}</p>`;
+                            customerInfoHtml += `<p>-------------------</p>`;
+                        });
 					} else {
 						customerInfoHtml += '<p>No customer found with that ID.</p>';
 					}
@@ -59,7 +80,6 @@
 			$.ajax({
 				url: 'http://localhost:3000/user/' + searchInput + '/' + returnDateInput,
 				type: 'PUT',
-				dataType: 'json',
 				success: function(data) {
 					console.log(data);
 					alert('Return date updated successfully.');
@@ -71,6 +91,7 @@
 		});
 	});
 	</script>
+    <script src="utility/header-login-check.js"></script>
 </body>
 </html>
 

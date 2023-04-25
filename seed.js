@@ -39,6 +39,22 @@ db.exec(`
         state varchar(256)
     );
 
+    CREATE TRIGGER calculate_fine_update
+    AFTER UPDATE OF return_date ON checkouts
+    BEGIN
+        UPDATE checkouts
+        SET fine = MAX(0, CAST((julianday(NEW.return_date) - julianday(NEW.checkout_date) - 14) AS INTEGER))
+        WHERE user_id = NEW.user_id AND book_id = NEW.book_id;
+    END;
+
+    CREATE TRIGGER calculate_fine_insert
+    AFTER INSERT ON checkouts
+    BEGIN
+        UPDATE checkouts
+        SET fine = MAX(0, CAST((julianday(NEW.return_date) - julianday(NEW.checkout_date) - 14) AS INTEGER))
+        WHERE user_id = NEW.user_id AND book_id = NEW.book_id;
+    END;
+
     create trigger increment_checkout_count
     after insert on checkouts
     begin
@@ -119,9 +135,24 @@ db.exec(`
         (title, branch_id, subtitle, author, publisher)
         values ('Writing Code That Nobody Else can Read', 3, 'Does it run? Just leave it alone.', 'The Practical Dev', 'ORLY');
 
-    insert or replace into checkouts
-        values (1, 2, DATE('2023-04-20'), DATE('2023-04-20'), 0);
+    INSERT INTO checkouts
+        (user_id, book_id, checkout_date, return_date)
+        VALUES (1, 3, DATE('2023-04-01'), DATE('2023-04-14'));
 
-    insert or replace into checkouts
-        values (2, 1, DATE('2023-04-20'), DATE('2023-04-23'), 0);
+    INSERT INTO checkouts
+        (user_id, book_id, checkout_date, return_date)
+        VALUES (2, 4, DATE('2023-04-01'), DATE('2023-04-15'));
+
+    INSERT INTO checkouts
+        (user_id, book_id, checkout_date, return_date)
+        VALUES (3, 5, DATE('2023-04-01'), DATE('2023-04-16'));
+
+    INSERT INTO checkouts
+        (user_id, book_id, checkout_date, return_date)
+        VALUES (4, 6, DATE('2023-04-01'), DATE('2023-04-20'));
+
+    INSERT INTO checkouts
+        (user_id, book_id, checkout_date, return_date)
+        VALUES (5, 7, DATE('2023-04-01'), DATE('2023-04-25'));
+
 `);

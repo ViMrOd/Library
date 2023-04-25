@@ -1,3 +1,7 @@
+function checkOut(book) {
+
+}
+
 function addBook(book) {
     const bookGrid = document.querySelector(".book-grid");
     const bookItem = document.createElement("li");
@@ -16,6 +20,8 @@ function addBook(book) {
 
     const checkoutButton = document.createElement("button");
     checkoutButton.textContent = "Checkout"
+    checkoutButton.addEventListener("click", ()=> checkOut(book))
+
     const infoButton = document.createElement("button");
     infoButton.textContent = "More Info"
     infoButton.addEventListener("click", ()=> updateAndDisplayInfoMenu(book));

@@ -48,13 +48,10 @@ app.get('/user/:identifier', (req, res) => {
 app.put('/user/:identifier/:date', (req, res) => {
     const { identifier, date } = req.params;
     // date == '2023-04-27'
+    console.log(identifier, date);
     try {
-        const query = db.prepare(`UPDATE checkouts
-            SET return_date = DATE(?)
-            WHERE user_id IN (
-                SELECT user_id FROM users WHERE user_id = ? OR username = ?
-            )`);
-        query.run(date, identifier, identifier);
+        const query = db.prepare('UPDATE users natural join checkouts SET return_date = DATE(?) WHERE user_id = ? OR username = ?');
+        const result = query.run(date, identifier, identifier);
         res.status(200).send('Return date updated successfully.');
     } catch (error) {
         console.error(error);
