@@ -50,6 +50,25 @@
 				}
 			});
 		});
+		
+		$('#updateReturnDateButton').on('click', function(e) {
+			e.preventDefault();
+			var searchInput = $('#searchInput').val();
+			var returnDateInput = $('#returnDateInput').val();
+
+			$.ajax({
+				url: 'http://localhost:3000/user/' + searchInput + '/' + returnDateInput,
+				type: 'PUT',
+				dataType: 'json',
+				success: function(data) {
+					console.log(data);
+					alert('Return date updated successfully.');
+				},
+				error: function() {
+					alert('Error updating return date for customer.');
+				}
+			});
+		});
 	});
 	</script>
 </body>
