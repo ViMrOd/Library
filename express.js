@@ -8,7 +8,7 @@ app.use(cors());
 
 app.get('/books', (req, res) => {
     try {
-        const books = db.prepare(`select * from books`).all();
+        const books = db.prepare(`select * from books natural join branches`).all();
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(books));
 
@@ -23,18 +23,23 @@ app.get('/checkout/:bookID/:userID', (req, res) => {
     try {
         const bookID = req.params.bookID;
         const userID = req.params.userID;
-        db.prepare(`
-            INSERT INTO checkouts
-            (user_id, book_id, checkout_date, return_date)
-            VALUES (?, ?, CURRENT_DATE, date(CURRENT_DATE, '+10 days'));`).run(userID, bookID);
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify("Successful checkout"));
+        const checkout = db.prepare(`select book_id from checkouts where user_id = ? and book_id = ?`).get(userID, bookID);
+        if (checkout) {
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify("You have already checked out this book"));
+        } else {
+            db.prepare(`
+                INSERT INTO checkouts
+                (user_id, book_id, checkout_date, return_date)
+                VALUES (?, ?, CURRENT_DATE, date(CURRENT_DATE, '+10 days'));`).run(userID, bookID);
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify("Successful checkout"));
+        }
 
     } catch (error) {
         console.error(error);
 		res.status(500).send('Error checking out.');
     }
-
 });
 
 app.get('/books/:branchName', (req, res) => {
@@ -76,7 +81,7 @@ app.put('/user/:identifier/:date', (req, res) => {
         res.status(200).send('Return date updated successfully.');
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error updating return date for customer.');
+        res.status(500).send('Updating return date for customer.');
     }
 });
 

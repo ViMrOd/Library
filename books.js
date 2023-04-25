@@ -1,18 +1,16 @@
 const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
 function checkOut(book) {
-    $('.checkout-button').on('click', function() {
-        $.ajax({
-            url: 'http://localhost:3000/checkout/' + book.book_id + "/" + loggedInUser.user_id,
-            type: 'GET',
-            dataType: 'json',
-            success: function(status) {
-                alert(status);
-            },
-            error: function(textStatus, errorThrown) {
-                console.error('Error:', textStatus, errorThrown);
-            }
-        });
+    $.ajax({
+        url: 'http://localhost:3000/checkout/' + book.book_id + "/" + loggedInUser.user_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(status) {
+            alert(status);
+        },
+        error: function(textStatus, errorThrown) {
+            console.error('Error:', textStatus, errorThrown);
+        }
     });
 }
 
@@ -32,18 +30,27 @@ function addBook(book) {
     bookLinkTitle.textContent = book.title;
     bookContent.appendChild(bookLinkTitle);
 
-    const checkoutButton = document.createElement("button");
-    checkoutButton.classList.add("checkout-button");
-    checkoutButton.textContent = "Checkout"
-    checkoutButton.addEventListener("click", ()=> checkOut(book))
+    const buttonContainer = document.createElement("div");
+    bookContent.appendChild(buttonContainer);
 
     const infoButton = document.createElement("button");
     infoButton.textContent = "More Info"
-    infoButton.addEventListener("click", ()=> updateAndDisplayInfoMenu(book));
-    const buttonContainer = document.createElement("div");
-    buttonContainer.appendChild(checkoutButton);
+    infoButton.addEventListener("click", (e)=> {
+        e.preventDefault();
+        updateAndDisplayInfoMenu(book);
+    });
     buttonContainer.appendChild(infoButton);
-    bookContent.appendChild(buttonContainer);
+
+    if (loggedInUser) {
+        const checkoutButton = document.createElement("button");
+        checkoutButton.classList.add("checkout-button");
+        checkoutButton.textContent = "Checkout"
+        checkoutButton.addEventListener("click", (e)=> {
+            e.preventDefault();
+            checkOut(book);
+        });
+        buttonContainer.appendChild(checkoutButton);
+    }
 
     bookItem.appendChild(bookContent);
     bookGrid.appendChild(bookItem);
@@ -57,6 +64,7 @@ function updateAndDisplayInfoMenu(book) {
     document.querySelector(".info-subtitle").textContent = book.subtitle;
     document.querySelector(".info-author").textContent = book.author;
     document.querySelector(".info-publisher").textContent = book.publisher;
+    document.querySelector(".info-branch").textContent = book.branch_name;
 }
 
 function updateAndDisplayBooks(books) {
@@ -98,6 +106,8 @@ $(document).ready(function() {
             console.error('Error:', textStatus, errorThrown);
         }
     });
+
+
 });
 
 

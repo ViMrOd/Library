@@ -25,12 +25,6 @@
 	<div id="customerInfo">
 	</div>
 
-	<div id="returnDateForm">
-		<label for="returnDateInput">Enter return date:</label>
-		<input type="date" id="returnDateInput" name="returnDateInput">
-		<button id="updateReturnDateButton">Update Return Date</button>
-	</div>
-
 	<script>
 	$(document).ready(function() {
 		$('#searchButton').on('click', function(e) {
@@ -58,6 +52,10 @@
                             customerInfoHtml += `<p>checkout date: ${checkout.checkout_date}</p>`;
                             customerInfoHtml += `<p>return date: ${checkout.return_date}</p>`;
                             customerInfoHtml += `<p>fine: ${checkout.fine}</p>`;
+                            customerInfoHtml += `<div id="returnDateForm">
+                                <label for="returnDateInput">Enter return date:</label>
+                                <input type="date" id="returnDateInput" name="returnDateInput">
+                                <button id="updateReturnDateButton">Update Return Date</button></div>`
                             customerInfoHtml += `<p>-------------------</p>`;
                         });
 					} else {
@@ -84,8 +82,8 @@
 					console.log(data);
 					alert('Return date updated successfully.');
 				},
-				error: function() {
-					alert('Error updating return date for customer.');
+				error: function(data) {
+					alert("Return date must be after the checkout date");
 				}
 			});
 		});
