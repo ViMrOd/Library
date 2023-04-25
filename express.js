@@ -60,12 +60,9 @@ app.put('/user/:identifier/:date', (req, res) => {
 
 app.get('/login/:inputUsername/:inputPassword', (req, res) => {
     const inputUsername = req.params.inputUsername;
-    const inputPassword = req.params.inputPassword;
-    console.log(inputUsername);
     try {
-        // user = user object from query
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify("hello world"));
+        const user = db.prepare('SELECT * FROM users WHERE username = ?').get(inputUsername);
+        res.send(JSON.stringify(user));
 
     } catch (error) {
         console.error(error);
