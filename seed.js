@@ -61,11 +61,31 @@ db.exec(`
 
     insert or replace into users
         (username, password, is_admin)
+        values ('admin', 'admin', 1);
+
+    insert or replace into users
+        (username, password, is_admin)
         values ('bob', '1234', 0);
 
     insert or replace into users
         (username, password, is_admin)
         values ('shelly', '4321', 1);
+
+    insert or replace into users
+        (username, password, is_admin)
+        values ('jane', 'abcd', 0);
+
+    insert or replace into users
+        (username, password, is_admin)
+        values ('john', 'efgh', 1);
+
+    insert or replace into users
+        (username, password, is_admin)
+        values ('mary', 'ijkl', 0);
+
+    insert or replace into users
+        (username, password, is_admin)
+        values ('mike', 'mnop', 1);
 
     insert or replace into books
         (title, branch_id, subtitle, author, publisher)
