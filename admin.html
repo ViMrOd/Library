@@ -13,6 +13,12 @@
 
 	<div id="customerInfo">
 	</div>
+	
+	<div id="returnDateForm" style="display: none;">
+		<label for="returnDateInput">Enter return date:</label>
+		<input type="text" id="returnDateInput" name="returnDateInput">
+		<button id="updateReturnDateButton">Update Return Date</button>
+	</div>
 
 	<script>
 	$(document).ready(function() {
@@ -41,6 +47,25 @@
 				},
 				error: function() {
 					$('#customerInfo').html('<p>Error searching for customer.</p>');
+				}
+			});
+		});
+		
+		$('#updateReturnDateButton').on('click', function(e) {
+			e.preventDefault();
+			var searchInput = $('#searchInput').val();
+			var returnDateInput = $('#returnDateInput').val();
+
+			$.ajax({
+				url: 'http://localhost:3000/user/' + searchInput + '/' + returnDateInput,
+				type: 'PUT',
+				dataType: 'json',
+				success: function(data) {
+					console.log(data);
+					alert('Return date updated successfully.');
+				},
+				error: function() {
+					alert('Error updating return date for customer.');
 				}
 			});
 		});
