@@ -1,5 +1,19 @@
-function checkOut(book) {
+const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
+function checkOut(book) {
+    $('.checkout-button').on('click', function() {
+        $.ajax({
+            url: 'http://localhost:3000/checkout/' + book.book_id + "/" + loggedInUser.user_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(status) {
+                alert(status);
+            },
+            error: function(textStatus, errorThrown) {
+                console.error('Error:', textStatus, errorThrown);
+            }
+        });
+    });
 }
 
 function addBook(book) {
@@ -19,6 +33,7 @@ function addBook(book) {
     bookContent.appendChild(bookLinkTitle);
 
     const checkoutButton = document.createElement("button");
+    checkoutButton.classList.add("checkout-button");
     checkoutButton.textContent = "Checkout"
     checkoutButton.addEventListener("click", ()=> checkOut(book))
 

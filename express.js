@@ -19,6 +19,24 @@ app.get('/books', (req, res) => {
 
 });
 
+app.get('/checkout/:bookID/:userID', (req, res) => {
+    try {
+        const bookID = req.params.bookID;
+        const userID = req.params.userID;
+        db.prepare(`
+            INSERT INTO checkouts
+            (user_id, book_id, checkout_date, return_date)
+            VALUES (?, ?, CURRENT_DATE, date(CURRENT_DATE, '+10 days'));`).run(userID, bookID);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify("Successful checkout"));
+
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error checking out.');
+    }
+
+});
+
 app.get('/books/:branchName', (req, res) => {
     try {
         const branchName = req.params.branchName;
