@@ -46,7 +46,7 @@ app.get('/books/:branchName', (req, res) => {
     try {
         const branchName = req.params.branchName;
         const branch = db.prepare(`select branch_id from branches where branch_name = ?`).get(branchName);
-        const books = db.prepare(`select * from books where branch_id = ?`).all(branch.branch_id);
+        const books = db.prepare(`select * from books natural join branches where branch_id = ?`).all(branch.branch_id);
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(books));
 
@@ -68,16 +68,17 @@ app.get('/user/:identifier', (req, res) => {
     }
 });
 
-app.put('/user/:identifier/:date', (req, res) => {
-    const { identifier, date } = req.params;
+app.put('/user/:identifier/:bookID/:date', (req, res) => {
+    const { identifier, date, bookID } = req.params;
     // date == '2023-04-27'
+    console.log(identifier, date, bookID);
     try {
         const query = db.prepare(`UPDATE checkouts
             SET return_date = DATE(?)
             WHERE user_id IN (
-                SELECT user_id FROM users WHERE user_id = ? OR username = ?
+                SELECT user_id FROM users natural join checkouts WHERE (user_id = ? OR username = ?) AND (book_id = ?)
             )`);
-        query.run(date, identifier, identifier);
+        query.run(date, identifier, identifier, bookID);
         res.status(200).send('Return date updated successfully.');
     } catch (error) {
         console.error(error);

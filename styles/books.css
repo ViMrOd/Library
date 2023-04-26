@@ -16,8 +16,8 @@
 img {
     outline: black solid 1px;
     display: block;
-    width: 12rem;
-    height: auto;
+    width: 13rem;
+    height: 17rem;
 }
 
 .book-content > a {

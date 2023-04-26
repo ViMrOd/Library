@@ -2,7 +2,7 @@ const navList = document.querySelector("nav > ul");
 const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
 
 if (loggedInUser) {
-    document.querySelector('a[href="login.html"]').remove();
+    document.querySelector('.login-item').remove();
     if (loggedInUser.is_admin) {
         const adminListItem = document.createElement("li");
         const adminLink = document.createElement("a");

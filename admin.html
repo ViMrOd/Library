@@ -12,11 +12,11 @@
         <ul>
           <li><a href="/">Home</a></li>
           <li><a href="books.html">Books</a></li>
-          <li><a href="login.html">Login</a></li>
+          <li class="login-item"><a href="login.html">Login</a></li>
         </ul>
       </nav>
     </header>
-	<h1>Library Admin Portal</h1>
+	<h1>Admin Portal</h1>
 
 	<label for="searchInput">Search customer:</label>
 	<input type="text" id="searchInput" name="searchInput">
@@ -26,6 +26,76 @@
 	</div>
 
 	<script>
+    function updateReturnDate(checkout) {
+        var searchInput = $('#searchInput').val();
+        var returnDateInput = $('#returnDateInput').val();
+        $.ajax({
+            url: 'http://localhost:3000/user/' + searchInput  + "/" + checkout.book_id + "/" + returnDateInput,
+            type: 'PUT',
+            success: function(status) {
+                alert(status);
+            },
+            error: function() {
+                alert("Return date must be after checkout date");
+            }
+        });
+    }
+
+function createCustomerInfo(data) {
+    const customer = data[0];
+
+    const customerInfoHtml = `
+        <h2>Customer Info</h2>
+        <p>Username: ${customer.username}</p>
+        <p>Password: ${customer.password}</p>
+        <p>Is admin?: ${customer.is_admin}</p>
+        <p>-------------------</p>
+        <p>Checked out books:</p>
+        <br>
+        ${createCheckedOutBooksHtml(data)}
+    `;
+
+    return customerInfoHtml;
+}
+
+    function createCheckedOutBooksHtml(data) {
+        return data.map(checkout => `
+            <p>-------------------</p> <p>Title: ${checkout.title}</p> <p>Checkout date: ${checkout.checkout_date}</p> <p>Return date: ${checkout.return_date}</p> <p>Fine: ${checkout.fine}</p>
+            ${createReturnDateForm(checkout)}
+            <p>-------------------</p>
+            `).join('');
+    }
+
+    function createReturnDateForm(checkout) {
+        const returnDateForm = document.createElement("div");
+        returnDateForm.setAttribute("id", "returnDateForm");
+
+        const label = document.createElement("label");
+        label.setAttribute("for", "returnDateInput");
+        label.textContent = "Enter return date:";
+        returnDateForm.appendChild(label);
+
+        const input = document.createElement("input");
+        input.setAttribute("type", "date");
+        input.setAttribute("id", "returnDateInput");
+        input.setAttribute("name", "returnDateInput");
+        returnDateForm.appendChild(input);
+
+        const updateReturnDateButton = document.createElement("button");
+        updateReturnDateButton.setAttribute("type", "submit");
+        updateReturnDateButton.setAttribute("id", "updateReturnDateButton");
+        updateReturnDateButton.setAttribute("name", "updateReturnDateButton");
+        updateReturnDateButton.textContent = "Update return date";
+        updateReturnDateButton.addEventListener("click", (e) => {
+            console.log("Test!");
+            e.preventDefault();
+            updateReturnDate(checkout);
+        });
+        returnDateForm.appendChild(updateReturnDateButton);
+
+        return returnDateForm.outerHTML;
+    }
+
 	$(document).ready(function() {
 		$('#searchButton').on('click', function(e) {
             e.preventDefault();
@@ -36,33 +106,10 @@
 				type: 'GET',
 				dataType: 'json',
 				success: function(data) {
-					var customerInfoHtml = '';
 					if (data) {
-						var customer = data[0];
-						customerInfoHtml += '<h2>Customer Info</h2>';
-						customerInfoHtml += '<p>Username: ' + customer.username + '</p>';
-						customerInfoHtml += '<p>Password: ' + customer.password + '</p>';
-						customerInfoHtml += '<p>Is admin?: ' + customer.is_admin + '</p>';
-                        customerInfoHtml += `<p>-------------------</p>`;
-						customerInfoHtml += '<p>Checked out books: </p>';
-                        customerInfoHtml += `<br>`;
-                        data.forEach(checkout => {
-                            customerInfoHtml += `<p>-------------------</p>`;
-                            customerInfoHtml += `<p>title: ${checkout.title}</p>`;
-                            customerInfoHtml += `<p>checkout date: ${checkout.checkout_date}</p>`;
-                            customerInfoHtml += `<p>return date: ${checkout.return_date}</p>`;
-                            customerInfoHtml += `<p>fine: ${checkout.fine}</p>`;
-                            customerInfoHtml += `<div id="returnDateForm">
-                                <label for="returnDateInput">Enter return date:</label>
-                                <input type="date" id="returnDateInput" name="returnDateInput">
-                                <button id="updateReturnDateButton">Update Return Date</button></div>`
-                            customerInfoHtml += `<p>-------------------</p>`;
-                        });
-					} else {
-						customerInfoHtml += '<p>No customer found with that ID.</p>';
-					}
-
-					$('#customerInfo').html(customerInfoHtml);
+                        const customerInfoHtml = createCustomerInfo(data);
+                        document.body.insertAdjacentHTML('beforeend', customerInfoHtml);
+                    }
 				},
 				error: function() {
 					$('#customerInfo').html('<p>Error searching for customer.</p>');
@@ -72,20 +119,6 @@
 
 		$('#updateReturnDateButton').on('click', function(e) {
 			e.preventDefault();
-			var searchInput = $('#searchInput').val();
-			var returnDateInput = $('#returnDateInput').val();
-
-			$.ajax({
-				url: 'http://localhost:3000/user/' + searchInput + '/' + returnDateInput,
-				type: 'PUT',
-				success: function(data) {
-					console.log(data);
-					alert('Return date updated successfully.');
-				},
-				error: function(data) {
-					alert("Return date must be after the checkout date");
-				}
-			});
 		});
 	});
 	</script>
