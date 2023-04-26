@@ -5,8 +5,8 @@
   "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "./node_modules/.bin/browser-sync start --server --files '**/*'",
-    "gptDev": "node_modules\\.bin\\browser-sync.cmd start --server --files '*/'"
+    "dev": "node express.js & ./node_modules/.bin/browser-sync start --server --files '**/*'",
+    "gptDev": "start node express.js & start node_modules\\.bin\\browser-sync.cmd start --server --files '*/'"
   },
   "repository": {
     "type": "git",
