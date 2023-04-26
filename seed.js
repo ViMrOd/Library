@@ -32,6 +32,9 @@ db.exec(`
         checkout_count integer default 0 check (checkout_count >= 0)
     );
 
+    create index branch_name_index
+    on branches(branch_name);
+
     create table if not exists user_addresses (
         user_id integer NOT NULL primary key references users(user_id),
         street varchar(256),
