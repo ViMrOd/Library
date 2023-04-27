@@ -68,10 +68,32 @@ app.get('/user/:identifier', (req, res) => {
     }
 });
 
+app.get('/user/:id/checkouts', (req, res) => {
+	const userID = req.params.id;
+    try {
+        const checkouts = db.prepare('select * from checkouts natural join books where user_id = ?').all(userID);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(checkouts));
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for user.');
+    }
+});
+
+app.put('/user/:id/checkouts/:bookID', (req, res) => {
+	const userID = req.params.id;
+    const bookID = req.params.bookID;
+    try {
+        db.prepare('delete from checkouts where user_id = ? and book_id = ?').run(userID, bookID);
+    } catch (error) {
+        console.error(error);
+		res.status(500).send('Error searching for user.');
+    }
+});
+
 app.put('/user/:identifier/:bookID/:date', (req, res) => {
     const { identifier, date, bookID } = req.params;
     // date == '2023-04-27'
-    console.log(identifier, date, bookID);
     try {
         const query = db.prepare(`UPDATE checkouts
             SET return_date = DATE(?)

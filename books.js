@@ -57,7 +57,7 @@ function addBook(book) {
 }
 
 function updateAndDisplayInfoMenu(book) {
-    document.querySelector(".info-menu").classList.add("visible");
+    document.querySelector(".info-menu").classList.add("visible-flex");
     document.querySelector(".info-image").setAttribute("src",
         `images/${book.title.toLowerCase().replaceAll(" ", "_")}.png`);
     document.querySelector(".info-title").textContent = book.title;
@@ -99,7 +99,7 @@ $(document).ready(function() {
         dataType: 'json',
         success: function(books) {
             document.querySelector(".close-info-menu-button").addEventListener("click",
-                ()=> document.querySelector(".info-menu").classList.remove("visible"));
+                ()=> document.querySelector(".info-menu").classList.remove("visible-flex"));
             updateAndDisplayBooks(books);
         },
         error: function(textStatus, errorThrown) {
