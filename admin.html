@@ -3,11 +3,12 @@
 <head>
 	<title>Library Admin Portal</title>
     <link rel="stylesheet" href="styles/global.css">
+    <link rel="stylesheet" href="styles/admin.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <header>
-      <h1>Library Name</h1>
+      <h1>SEAL</h1>
       <nav>
         <ul>
           <li><a href="/">Home</a></li>
@@ -30,6 +31,7 @@
 
 	<div class="customer-info">
 	</div>
+    <div class="container" id="customerInfoContainer"></div>
 
 	<script>
         function updateReturnDate(checkout) {
@@ -47,100 +49,104 @@
             });
         }
 
-        function createCustomerInfo(data) {
-            console.log(data);
-            const customer = data[0];
 
-            const customerInfo = document.createElement("div");
+function createCustomerInfo(data) {
+    const customer = data[0];
 
-            const header = document.createElement("h2");
-            header.textContent = "Customer Info";
-            customerInfo.appendChild(header);
+    const customerInfo = document.createElement("div");
+    customerInfo.classList.add("customer-info");
 
-            const username = document.createElement("p");
-            username.textContent = `Username: ${customer.username}`;
-            customerInfo.appendChild(username);
+    const header = document.createElement("h2");
+    header.textContent = "Customer Info";
+    customerInfo.appendChild(header);
 
-            const password = document.createElement("p");
-            password.textContent = `Password: ${customer.password}`;
-            customerInfo.appendChild(password);
+    const username = document.createElement("p");
+    username.textContent = `Username: ${customer.username}`;
+    customerInfo.appendChild(username);
 
-            const isAdmin = document.createElement("p");
-            isAdmin.textContent = `Is admin?: ${customer.is_admin}`;
-            customerInfo.appendChild(isAdmin);
+    const password = document.createElement("p");
+    password.textContent = `Password: ${customer.password}`;
+    customerInfo.appendChild(password);
 
-            const separator = document.createElement("p");
-            separator.textContent = "-------------------";
-            customerInfo.appendChild(separator);
+    const isAdmin = document.createElement("p");
+    isAdmin.classList.add("isAdmin");
+    isAdmin.textContent = customer.is_admin ? "Admin" : "";
+    customerInfo.appendChild(isAdmin);
 
-            const checkedOutBooksLabel = document.createElement("p");
-            checkedOutBooksLabel.textContent = "Checked out books:";
-            customerInfo.appendChild(checkedOutBooksLabel);
+    const separator = document.createElement("p");
+    separator.classList.add("separator");
+    customerInfo.appendChild(separator);
 
-            const checkedOutBooks = createCheckedOutBooksHtml(data);
-            customerInfo.appendChild(checkedOutBooks);
+    const checkedOutBooksLabel = document.createElement("p");
+    checkedOutBooksLabel.textContent = "Checked out books:";
+    customerInfo.appendChild(checkedOutBooksLabel);
 
-            return customerInfo;
-        }
+    const checkedOutBooks = createCheckedOutBooksHtml(data);
+    customerInfo.appendChild(checkedOutBooks);
 
-        function createCheckedOutBooksHtml(data) {
-            const checkedOutBooks = document.createElement("div");
+    return customerInfo;
+}
 
-            data.forEach(checkout => {
-                const separator = document.createElement("p");
-                separator.textContent = "-------------------";
-                checkedOutBooks.appendChild(separator);
+function createCheckedOutBooksHtml(data) {
+    const checkedOutBooks = document.createElement("div");
+    checkedOutBooks.classList.add("checked-out-books");
 
-                const title = document.createElement("p");
-                title.textContent = `Title: ${checkout.title}`;
-                checkedOutBooks.appendChild(title);
+    data.forEach(checkout => {
+        const separator = document.createElement("p");
+        separator.classList.add("separator");
+        checkedOutBooks.appendChild(separator);
 
-                const checkoutDate = document.createElement("p");
-                checkoutDate.textContent = `Checkout date: ${checkout.checkout_date}`;
-                checkedOutBooks.appendChild(checkoutDate);
+        const title = document.createElement("p");
+        title.textContent = `Title: ${checkout.title}`;
+        checkedOutBooks.appendChild(title);
 
-                const returnDate = document.createElement("p");
-                returnDate.textContent = `Return date: ${checkout.return_date}`;
-                checkedOutBooks.appendChild(returnDate);
+        const checkoutDate = document.createElement("p");
+        checkoutDate.textContent = `Checkout date: ${checkout.checkout_date}`;
+        checkedOutBooks.appendChild(checkoutDate);
 
-                const fine = document.createElement("p");
-                fine.textContent = `Fine: ${checkout.fine}`;
-                checkedOutBooks.appendChild(fine);
+        const returnDate = document.createElement("p");
+        returnDate.textContent = `Return date: ${checkout.return_date}`;
+        checkedOutBooks.appendChild(returnDate);
 
-                const returnDateForm = createReturnDateForm(checkout);
-                checkedOutBooks.appendChild(returnDateForm);
-            });
+        const fine = document.createElement("p");
+        fine.textContent = `Fine: ${checkout.fine}`;
+        checkedOutBooks.appendChild(fine);
 
-            return checkedOutBooks;
-        }
+        const returnDateForm = createReturnDateForm(checkout);
+        checkedOutBooks.appendChild(returnDateForm);
+    });
 
-        function createReturnDateForm(checkout) {
-            const returnDateForm = document.createElement("div");
-            returnDateForm.setAttribute("id", "returnDateForm");
+    return checkedOutBooks;
+}
 
-            const label = document.createElement("label");
-            label.setAttribute("for", "returnDateInput");
-            label.textContent = "Enter return date:";
-            returnDateForm.appendChild(label);
+function createReturnDateForm(checkout) {
+    const returnDateForm = document.createElement("div");
+    returnDateForm.classList.add("return-date-form");
+    returnDateForm.setAttribute("id", "returnDateForm");
 
-            const input = document.createElement("input");
-            input.setAttribute("type", "date");
-            input.setAttribute("id", "returnDateInput");
-            input.setAttribute("name", "returnDateInput");
-            input.setAttribute("data-book-id", `${checkout.book_id}`);
-            returnDateForm.appendChild(input);
+    const label = document.createElement("label");
+    label.setAttribute("for", "returnDateInput");
+    label.textContent = "Enter return date:";
+    returnDateForm.appendChild(label);
 
-            const updateReturnDateButton = document.createElement("button");
-            updateReturnDateButton.setAttribute("id", "updateReturnDateButton");
-            updateReturnDateButton.setAttribute("name", "updateReturnDateButton");
-            updateReturnDateButton.textContent = "Update return date";
-            updateReturnDateButton.addEventListener("click", (e) => {
-                updateReturnDate(checkout);
-            });
-            returnDateForm.appendChild(updateReturnDateButton);
+    const input = document.createElement("input");
+    input.setAttribute("type", "date");
+    input.setAttribute("id", "returnDateInput");
+    input.setAttribute("name", "returnDateInput");
+    input.setAttribute("data-book-id", `${checkout.book_id}`);
+    returnDateForm.appendChild(input);
 
-            return returnDateForm;
-        }
+    const updateReturnDateButton = document.createElement("button");
+    updateReturnDateButton.setAttribute("id", "updateReturnDateButton");
+    updateReturnDateButton.setAttribute("name", "updateReturnDateButton");
+    updateReturnDateButton.textContent = "Update return date";
+    updateReturnDateButton.addEventListener("click", (e) => {
+        updateReturnDate(checkout);
+    });
+    returnDateForm.appendChild(updateReturnDateButton);
+
+    return returnDateForm;
+}
 
         $(document).ready(function() {
             $('#searchButton').on('click', function(e) {

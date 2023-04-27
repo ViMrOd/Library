@@ -11,7 +11,6 @@ app.get('/books', (req, res) => {
         const books = db.prepare(`select * from books natural join branches`).all();
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(books));
-
     } catch (error) {
         console.error(error);
 		res.status(500).send('Error searching for books.');
