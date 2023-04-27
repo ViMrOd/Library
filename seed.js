@@ -42,22 +42,6 @@ db.exec(`
         state varchar(256)
     );
 
-    CREATE TRIGGER calculate_fine_update
-    AFTER UPDATE OF return_date ON checkouts
-    BEGIN
-        UPDATE checkouts
-        SET fine = MAX(0, CAST((julianday(NEW.return_date) - julianday(NEW.checkout_date) - 14) AS INTEGER))
-        WHERE user_id = NEW.user_id AND book_id = NEW.book_id;
-    END;
-
-    CREATE TRIGGER calculate_fine_insert
-    AFTER INSERT ON checkouts
-    BEGIN
-        UPDATE checkouts
-        SET fine = MAX(0, CAST((julianday(NEW.return_date) - julianday(NEW.checkout_date) - 14) AS INTEGER))
-        WHERE user_id = NEW.user_id AND book_id = NEW.book_id;
-    END;
-
     create trigger increment_checkout_count
     after insert on checkouts
     begin
